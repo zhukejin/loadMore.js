@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        * {
+            box-sizing: border-box;
+        }
+
+        #wrap {
+            margin: 10px  auto;
+        }
+
+        .content {
+            margin-bottom: 10px;
+            background-color: #CACACA;
+            height: 300px;
+            color: block;
+            font-size: 50px;
+            line-height: 200px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content span {
+            margin-right: 20px;
+        }
+
+        .footer {
+            background-color: green;
+            text-align: center;
+            color: white;
+            font-size: 30px;
+            height: 200px;
+            line-height: 200px;
+        }
+
+        .loading {
+            display: none;
+            background-color: yellow;
+            height: 100px;
+            line-height: 100px;
+            font-size: 30px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<div class="footer">
+    这里是页头（共五页）
+</div>
+<div id="wrap">
+    <div class="content">
+        <span>位置：第一页</span>
+        <span>姓名：朱轲瑾</span>
+        <span>性别：男</span>
+        <span>年龄：20</span>
+    </div>
+    <div class="content">
+        <span>位置：第一页</span>
+        <span>姓名：朱轲瑾</span>
+        <span>性别：男</span>
+        <span>年龄：20</span>
+    </div>
+    <div class="content">
+        <span>位置：第一页</span>
+        <span>姓名：朱轲瑾</span>
+        <span>性别：男</span>
+        <span>年龄：20</span>
+    </div>
+    <div class="content">
+        <span>位置：第一页</span>
+        <span>姓名：朱轲瑾</span>
+        <span>性别：男</span>
+        <span>年龄：20</span>
+    </div>
+    <div class="content">
+        <span>位置：第一页</span>
+        <span>姓名：朱轲瑾</span>
+        <span>性别：男</span>
+        <span>年龄：20</span>
+    </div>
+</div>
+<div class="loading">加载中...</div>
+<div class="footer">
+    这里是页脚
+</div>
+
+<script src="//cdn.bootcss.com/jquery/1.10.1/jquery.min.js"></script>
+<script src="../loadMore.js"></script>
+<script type="text/javascript">
+
+$('#wrap').loadMore({
+    totalPageNum: '5', //总页码
+    url: 'php/json.php',
+    dataType: 'json',
+    type: 'get',
+    loadingTag: '.loading',
+    success: function (data) {
+        function tpl (tpl, data) {
+            return tpl.replace(/{{(.*?)}}/g, function ($1, $2) {
+                var _result = data[$2] === undefined ? '0' : data[$2];
+                return _result;
+            });
+        }
+
+        if (data.flag == 0) {
+            var muslter = '<div class="content"><span>位置：{{position}}</span><span>姓名：{{name}}</span><span>性别：{{sex}}</span><span>年龄：{{age}}</span></div>', str = '';
+            [0,1,2,3,4].map(function (v) {
+                str += tpl(muslter, data.data[v]);
+            });
+
+        }
+
+        //这里修改Dom | append、 before、 after、 html 等
+        $("#wrap").append(str);
+    }
+})
+
+    
+</script>
+</body>
+</html>
